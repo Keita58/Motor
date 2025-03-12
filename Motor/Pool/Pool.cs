@@ -35,8 +35,13 @@ public class Pool<T>{
                 return element.element;
             }
         }
-        return elements.ElementAt(0).element;
         
+        PoolElement<T> aux = elements.ElementAt(0);
+        elements.Remove(aux);
+        elements.Add(aux);
+        aux.available = false;
+        goFactory.Activate(aux.element);
+        return aux.element;
     }
     
     public bool TryReturnElement(T gameObject){
