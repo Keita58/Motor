@@ -23,10 +23,10 @@ public class Pool<T>{
             elements.Add(new PoolElement<T>(goFactory.Create(), true)); 
             Console.WriteLine("AÑADO: "+elements.ElementAt(i).element);
         }
-        Console.WriteLine("tamaño lista pool: "+elements.Count);    
+        Console.WriteLine("Tamaño lista pool: "+elements.Count);    
     }
 
-    public T GetElement(){
+    public T? GetElement(){
         //Component a = new Component(a);
         foreach (PoolElement<T> element in elements){
             if (element.available){
@@ -36,22 +36,22 @@ public class Pool<T>{
             }
         }
         
-        PoolElement<T> aux = elements.ElementAt(0);
-        elements.Remove(aux);
-        elements.Add(aux);
-        aux.available = false;
-        goFactory.Activate(aux.element);
-        return aux.element;
+        //Això per si volem tornar sempre un objecte de la pool, sinó retornar default
+        T aux = goFactory.Create();
+        elements.Add(new PoolElement<T>(aux, false)); 
+        goFactory.Activate(aux);
+        return aux;
     }
     
     public bool TryReturnElement(T gameObject){
-         foreach (PoolElement<T> element in elements){
+        foreach (PoolElement<T> element in elements){
             if (element.element.Equals(gameObject)){
                 goFactory.Deactivate(element.element);
                 element.available=true;
                 return true;
             }
-         }
-            return false;
         }
+
+        return false;
+    }
 }

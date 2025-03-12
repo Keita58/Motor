@@ -1,8 +1,15 @@
 public class Comportament_Moviment : Component
 {
+    private Transform _ComponentTransform;
     public override string _NomComponent => "Comportament_Moviment";
-
+    // Fer start i posar getcomponent a una variable!!!!
     public Comportament_Moviment() {}
+
+    public override void Start()
+    {
+        base.Start();
+        _ComponentTransform = _GameObject.GetComponent<Transform>();
+    }
 
     public override void Update(float deltaTime)
     {
@@ -10,43 +17,19 @@ public class Comportament_Moviment : Component
 
         if(Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.W))
         {
-            foreach(Component aux in _GameObject._Components) 
-            {
-                if(aux is Transform) {
-                    ((Transform)aux)._Y -= 550*deltaTime;
-                    break;
-                }
-            }
+            _ComponentTransform._Y -= 550*deltaTime;
         }
         if(Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.A))
         {
-            foreach(Component aux in _GameObject._Components) 
-            {
-                if(aux is Transform) {
-                    ((Transform)aux)._X -= 550*deltaTime;
-                    break;
-                }
-            }
+            _ComponentTransform._X -= 550*deltaTime;
         }
         if(Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.S))
         {
-            foreach(Component aux in _GameObject._Components) 
-            {
-                if(aux is Transform) {
-                    ((Transform)aux)._Y += 550*deltaTime;
-                    break;
-                }
-            }
+            _ComponentTransform._Y += 550*deltaTime;
         }
         if(Raylib_cs.Raylib.IsKeyDown(Raylib_cs.KeyboardKey.D))
         {
-            foreach(Component aux in _GameObject._Components) 
-            {
-                if(aux is Transform) {
-                    ((Transform)aux)._X += 550*deltaTime;
-                    break;
-                }
-            }
+            _ComponentTransform._X += 550*deltaTime;
         }
     }
 }

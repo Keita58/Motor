@@ -12,6 +12,7 @@ public class Render_Objecte : Component
     private Raylib_cs.Color _Color { get => color; set => color = value; }
     public override string _NomComponent => "Render";
     private string nom;
+    private Transform _ComponentTransform;
 
     public Render_Objecte() {}
 
@@ -30,24 +31,24 @@ public class Render_Objecte : Component
         nom = "Cercle";
     }
 
+    public override void Start()
+    {
+        base.Start();
+
+        _ComponentTransform = _GameObject.GetComponent<Transform>();
+    }
+
     public override void Render()
     {
         base.Render();
 
-        foreach(Component aux in _GameObject._Components) 
-        {
-            if(aux is Transform) {
-                switch(this.nom) {
-                    case "Rectangle":
-                        Renderer.DibuixarRectangle((int)((Transform)aux)._X, (int)((Transform)aux)._Y, _Width, _Height, _Color);
-                        break;
-                    case "Cercle":
-                        Renderer.DibuixarCercle((int)((Transform)aux)._X, (int)((Transform)aux)._Y, _Radi, _Color);
-                        break;
-                }
-                
+        switch(this.nom) {
+            case "Rectangle":
+                Renderer.DibuixarRectangle((int)_ComponentTransform._X, (int)_ComponentTransform._Y, _Width, _Height, _Color);
                 break;
-            }
+            case "Cercle":
+                Renderer.DibuixarCercle((int)_ComponentTransform._X, (int)_ComponentTransform._Y, _Radi, _Color);
+                break;
         }
     }
 }

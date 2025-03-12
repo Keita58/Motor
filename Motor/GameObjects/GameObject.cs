@@ -4,8 +4,22 @@ public abstract class GameObject
     public abstract string _Nom { get; }
     public abstract List<Component> _Components { get; set; }
     protected GameObject() {}
-    public abstract void Dispose();
-    public abstract void Start();
+    public void Dispose() 
+    {
+        foreach(Component c in _Components) 
+        {
+            c.Dispose();
+        }
+    }
+
+    public void Start() 
+    {
+        foreach(Component c in _Components) 
+        {
+            c.Start();
+        }
+    }
+
     public void Update(float deltaTime)
     {
         foreach(Component c in _Components) 
@@ -22,14 +36,37 @@ public abstract class GameObject
         }
     }
     
-    public abstract void AddComponent(Component component);
-    public abstract void RemoveComponent(Component component);
+    public void AddComponent(Component component) 
+    {
+        _Components.Add(component);
+        component.SetGameObject(this);
+    }
+    
+    public void RemoveComponent(Component component)
+    {
+        _Components.Remove(component);
+    }
     
     //El where és un extends de la classe Component
     //https://stackoverflow.com/questions/4732494/cs-equivalent-of-javas-extends-base-in-generics
-    public abstract bool HasComponent<T>(T component) where T : Component;
+    public bool HasComponent<T>()  where T : Component
+    {
+        foreach(Component component in _Components) {
+            if(component is T)
+                return true;
+        }
+        return false;
+    }
 
     //El where és un extends de la classe Component
     //https://stackoverflow.com/questions/4732494/cs-equivalent-of-javas-extends-base-in-generics
-    public abstract T GetComponent<T>(T component) where T : Component;
+    public T? GetComponent<T>() where T : Component
+    {
+        foreach(Component component in _Components) {
+            if(component is T)
+                return component as T;
+        }
+        return null;
+
+    }
 }

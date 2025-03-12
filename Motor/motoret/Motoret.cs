@@ -51,6 +51,9 @@ public class Motoret
         long tempsAnterior = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
         long tempsActualFrame = 0;
         float milisegonsPerFrame = (1/_FPSDesitjats) * 1000f; // Per calcular el que ha de durar el temps de cada frame 
+
+        foreach(GameObject go in _GameObjects)
+            go.Start();
         
         while(!Finalitzar && !Raylib.WindowShouldClose())
         {

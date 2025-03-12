@@ -15,11 +15,8 @@ class ElVostreMaina
         List<GameObject> aux = new List<GameObject>();
         
         if(!File.Exists(nom)) {
-            GameObjectFactory factory = new GameObjectFactory();
-            Pool<GameObject> pool = new Pool<GameObject>(10, factory); 
-            Spawner sp = new Spawner(pool);
-            Thread spawner = new Thread(()=>sp.Spawn(5));
-            spawner.Start();
+            ObjecteSpawner os = new ObjecteSpawner(5, 3);
+            motoret.AfegirGameObject(os);
         }
         else {
             aux = Guardat.Carregar(nom)!;
